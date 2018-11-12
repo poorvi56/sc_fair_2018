@@ -9,9 +9,9 @@ import logging
 
 logger = logging.getLogger("sc_fair")
 
-def dht_readings():
+def dht_readings(out_file):
     "This function is opening a new file and sending the readings from the AM2302 to the file."
-    f = open("DHTreading_file", "w+")
+    f = open(out_file, "w+")
 
     while True:
         current = datetime.datetime.now()
@@ -26,4 +26,4 @@ def dht_readings():
 
 if __name__ == '__main__':
     logger.info("Starting readings of humidity and temperature")
-    dht_readings()
+    dht_readings("dht_readings.log")
