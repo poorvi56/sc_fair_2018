@@ -6,6 +6,7 @@
 import Adafruit_DHT
 import datetime
 import logging
+import time
 
 logger = logging.getLogger("sc_fair")
 
@@ -20,6 +21,7 @@ def dht_readings():
         humidity, temperature = Adafruit_DHT.read_retry(sensormodel, sensorpin)
         f.write(humidity, temperature, current)
         logger.info("Collected sample at %s", str(current))
+        time.sleep(300)
         # TODO Sleep!!!
 
     f.close()
