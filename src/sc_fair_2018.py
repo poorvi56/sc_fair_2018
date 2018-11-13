@@ -10,6 +10,12 @@ import time
 
 logger = logging.getLogger("sc_fair")
 
+def to_farnheit(temp_in_celcius):
+    "This function converts a temperature in celcius to farnheit"
+#    return 0.0
+    x = open("dht_readings.log", "r")
+    temp_in_farnheit = (temp_in_celcius * 9/5) + 32
+
 def dht_readings(out_file):
     "This function is opening a new file and sending the readings from the AM2302 to the file."
     f = open(out_file, "w+")
@@ -18,8 +24,9 @@ def dht_readings(out_file):
         current = datetime.datetime.now()
         sensormodel = Adafruit_DHT.AM2302
         sensorpin = 4
-        humidity, temperature = Adafruit_DHT.read_retry(sensormodel, sensorpin)
-        f.write(humidity, temperature, current)
+        humidity, temp_in_celcius = Adafruit_DHT.read_retry(sensormodel, sensorpin)
+        temp_in_farnheit = to_farnheit(temp_in_celcius)
+        f.write("humidity, temp_in_farnheit, current")
         logger.info("Collected sample at %s", str(current))
         time.sleep(300)
         # TODO Sleep!!!
