@@ -3,7 +3,7 @@
 #Send them to a newly-made file
 #Store them with the time
 
-import Adafruit_DHT
+#import Adafruit_DHT
 import datetime
 import logging
 
