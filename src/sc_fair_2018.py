@@ -12,9 +12,9 @@ logger = logging.getLogger("sc_fair")
 
 def to_farnheit(temp_in_celcius):
     "This function converts a temperature in celcius to farnheit"
-#    return 0.0
     x = open("dht_readings.log", "r")
     temp_in_farnheit = (temp_in_celcius * 9/5) + 32
+    return temp_in_farnheit
 
 def dht_readings(out_file):
     "This function is opening a new file and sending the readings from the AM2302 to the file."
