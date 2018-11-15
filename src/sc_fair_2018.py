@@ -26,7 +26,7 @@ def dht_readings(out_file):
         sensorpin = 4
         humidity, temp_in_celcius = Adafruit_DHT.read_retry(sensormodel, sensorpin)
         temp_in_farnheit = to_farnheit(temp_in_celcius)
-        f.write("humidity, temp_in_farnheit, current")
+        f.write(str(current) + ", " +  str(humidity) + ", " + str(temp_in_farnheit) + "\n")
         logger.info("Collected sample at %s", str(current))
         time.sleep(300)
         # TODO Sleep!!!
