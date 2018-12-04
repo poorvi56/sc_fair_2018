@@ -54,7 +54,7 @@ def dht_readings(out_file):
     "This function is opening a new file and sending the readings from the AM2302 to the file."
     while True:
         current = datetime.datetime.now()
-        sensormodel = Adafruit_DHT.AM2302\
+        sensormodel = Adafruit_DHT.AM2302
         sensorpin = 4
         humidity, temp_in_celcius = Adafruit_DHT.read_retry(sensormodel, sensorpin)
         temp_in_farnheit = to_farnheit(temp_in_celcius)
