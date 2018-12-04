@@ -65,7 +65,7 @@ def dht_readings(out_file):
 
 
 if __name__ == '__main__':
-    which_func = raw_input("Which function would you like to call: 1) CO2, or 2) AM2302?  ")
+    which_func = input("Which function would you like to call: 1) CO2, or 2) AM2302?  ")
     if which_func == "1":
         carbon_dioxide("carbon_dioxide.log")
     elif which_func == "2":
