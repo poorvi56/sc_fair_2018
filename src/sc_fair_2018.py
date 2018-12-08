@@ -37,7 +37,7 @@ def carbon_dioxide(out_file):
         now = datetime.datetime.now()
         with open(out_file, 'a') as fd:
             # fd.write("eCO2 = %d ppm, TVOC = %d ppb" % (sgp30.eCO2, sgp30.TVOC))
-            fd.write("%s, %d, %d " % (str(now), sgp30.eCO2, sgp30.TVOC))
+            fd.write("%s, %d, %d\n" % (str(now), sgp30.eCO2, sgp30.TVOC))
 
         elapsed_time += 1
         if elapsed_time > 6:
@@ -45,7 +45,7 @@ def carbon_dioxide(out_file):
             fd = open(out_file, "a")
             # fd.write("**** Baseline values: eCO2 = 0x%x, TVOC = 0x%x"
             #        % (sgp30.baseline_eCO2, sgp30.baseline_TVOC))
-            fd.write("**** Baseline values: %s, 0x%x, 0x%x"
+            fd.write("**** Baseline values: %s, 0x%x, 0x%x\n"
                 % (str(now), sgp30.baseline_eCO2, sgp30.baseline_TVOC))
             fd.close()
         time.sleep(300)
