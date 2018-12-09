@@ -48,7 +48,7 @@ def carbon_dioxide(out_file):
             fd.write("**** Baseline values: %s, 0x%x, 0x%x\n"
                 % (str(now), sgp30.baseline_eCO2, sgp30.baseline_TVOC))
             fd.close()
-        time.sleep(300)
+        time.sleep(60)
 
 def dht_readings(out_file):
     "This function is opening a new file and sending the readings from the AM2302 to the file."
