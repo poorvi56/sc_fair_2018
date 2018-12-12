@@ -66,10 +66,11 @@ def dht_readings(out_file):
 
 if __name__ == '__main__':
     which_func = input("Which function would you like to call: 1) CO2, or 2) AM2302?  ")
+    time_prefix = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M')
     if which_func == "1":
-        carbon_dioxide("carbon_dioxide.log")
+        carbon_dioxide("carbon_dioxide_" + time_prefix + ".log")
     elif which_func == "2":
-        dht_readings("dht_readings.log")
+        dht_readings("dht_readings_" + time_prefix + ".log")
     else:
         print("Invalid selection. Please try again later.")
 #    print("Starting readings of humidity and temperature")
