@@ -19,6 +19,16 @@ def to_farnheit(temp_in_celcius):
     temp_in_farnheit = (temp_in_celcius * 9/5) + 32
     return temp_in_farnheit
 
+def get_co2_reading():
+    i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+
+    # Create library object on our I2C port
+    sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+
+    sgp30.iaq_init()
+    sgp30.set_iaq_baseline(0x8973, 0x8aae)
+
+    return(sgp30.eCO2, sgp30.TVOC)
 
 def carbon_dioxide(out_file):
     i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
@@ -50,6 +60,14 @@ def carbon_dioxide(out_file):
             fd.close()
         time.sleep(1)
 
+def get_temp_hum_reading():
+    current = datetime.datetime.now()
+    sensormodel = Adafruit_DHT.AM2302
+    sensorpin = 4
+    humidity, temp_in_celcius = Adafruit_DHT.read_retry(sensormodel, sensorpin)
+    temp_in_farnheit = to_farnheit(temp_in_celcius)
+    return(humidity, temp_in_farnheit)
+
 def dht_readings(out_file):
     "This function is opening a new file and sending the readings from the AM2302 to the file."
     while True:
@@ -63,14 +81,26 @@ def dht_readings(out_file):
             f.write(str(current) + ", " + str(humidity) + ", " + str(temp_in_farnheit) + "\n")
         time.sleep(1)
 
+def write_data_to_file(out_file):
+    while True:
+        hum, temp = get_temp_hum_reading()
+        co2, tvoc = get_co2_reading()
+        right_now = datetime.datetime.now()
+        hms = right_now.strftime("%H:%M:%S")
+        with open(out_file, 'a') as f:
+            f.write(str(hms) + ", " + str(hum) + ", " + str(temp) + ", " + str(co2) + ", " + str(tvoc) + "\n")
+        f.close()
+        time.sleep(1)
 
 if __name__ == '__main__':
-    which_func = input("Which function would you like to call: 1) CO2, or 2) AM2302?  ")
+    which_func = input("Which function would you like to call: 1) CO2, 2) AM2302, or 3) Both?  ")
     time_prefix = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M')
     if which_func == "1":
         carbon_dioxide("carbon_dioxide_" + time_prefix + ".log")
     elif which_func == "2":
         dht_readings("dht_readings_" + time_prefix + ".log")
+    elif which_func == "3":
+        write_data_to_file("combined_data_" + time_prefix + ".log")
     else:
         print("Invalid selection. Please try again later.")
 #    print("Starting readings of humidity and temperature")
