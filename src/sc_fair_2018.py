@@ -12,6 +12,13 @@ import board
 import busio
 
 logger = logging.getLogger("sc_fair")
+i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+
+# Create library object on our I2C port
+sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+
+sgp30.iaq_init()
+sgp30.set_iaq_baseline(0x8973, 0x8aae)
 
 def to_farnheit(temp_in_celcius):
     "This function converts a temperature in celcius to farnheit"
@@ -20,14 +27,6 @@ def to_farnheit(temp_in_celcius):
     return temp_in_farnheit
 
 def get_co2_reading():
-    i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
-
-    # Create library object on our I2C port
-    sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
-
-    sgp30.iaq_init()
-    sgp30.set_iaq_baseline(0x8973, 0x8aae)
-
     return(sgp30.eCO2, sgp30.TVOC)
 
 def carbon_dioxide(out_file):
@@ -82,6 +81,9 @@ def dht_readings(out_file):
         time.sleep(1)
 
 def write_data_to_file(out_file):
+    with open(out_file, 'a') as f:
+        f.write("Time, Humidity, CO2, TVOC\n")
+
     while True:
         hum, temp = get_temp_hum_reading()
         co2, tvoc = get_co2_reading()
@@ -89,8 +91,7 @@ def write_data_to_file(out_file):
         hms = right_now.strftime("%H:%M:%S")
         with open(out_file, 'a') as f:
             f.write(str(hms) + ", " + str(hum) + ", " + str(temp) + ", " + str(co2) + ", " + str(tvoc) + "\n")
-        f.close()
-        time.sleep(1)
+        time.sleep(30)
 
 if __name__ == '__main__':
     which_func = input("Which function would you like to call: 1) CO2, 2) AM2302, or 3) Both?  ")
